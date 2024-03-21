@@ -1,0 +1,81 @@
+﻿@model string
+
+@{
+    ViewBag.Title = "台灣天氣預測";
+    //模板
+    //Layout = null;
+}
+<head>
+    <style>
+        td {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    </style>
+    <script>
+        function updateTime() {
+            var now = new Date();
+            var hour = now.getHours();
+            var min = now.getMinutes();
+            var sec = now.getSeconds();
+
+            var timeString = hour + ":" + min + ":" + sec;
+            document.getElementById("current-time").innerHTML = timeString;
+        }
+        setInterval(updateTime, 10);
+    </script>
+</head>
+
+@using (Html.BeginForm("Weather_Api", "Index", FormMethod.Post))
+{
+    @Html.DropDownList("loc", new List<SelectListItem>
+    {
+        new SelectListItem { Text = "臺北市", Value = "臺北市" },
+        new SelectListItem { Text = "新北市", Value = "新北市" },
+        new SelectListItem { Text = "基隆市", Value = "基隆市" },
+        new SelectListItem { Text = "桃園市", Value = "桃園市" },
+        new SelectListItem { Text = "臺中市", Value = "臺中市" },
+        new SelectListItem { Text = "苗栗縣", Value = "苗栗縣" },
+        new SelectListItem { Text = "彰化縣", Value = "彰化縣" },
+        new SelectListItem { Text = "南投縣", Value = "南投縣" },
+        new SelectListItem { Text = "高雄市", Value = "高雄市" },
+        new SelectListItem { Text = "臺南市", Value = "臺南市" },
+        new SelectListItem { Text = "嘉義市", Value = "嘉義市" },
+        new SelectListItem { Text = "嘉義縣", Value = "嘉義縣" },
+        new SelectListItem { Text = "屏東縣", Value = "屏東縣" },
+        new SelectListItem { Text = "澎湖縣", Value = "澎湖縣" },
+        new SelectListItem { Text = "花蓮縣", Value = "花蓮縣" },
+        new SelectListItem { Text = "臺東縣", Value = "臺東縣" },
+        new SelectListItem { Text = "金門縣", Value = "金門縣" }
+
+    })
+
+    <input type="submit" value="查詢" />
+
+    if (ViewBag.WeatherDataList != null && ViewBag.WeatherDataListPoP != null && ViewBag.WeatherDataListMinT != null
+        && ViewBag.WeatherDataListMaxT != null && ViewBag.WeatherDataListCI != null)
+    {
+        <h2 style="text-align:center;">@ViewBag.loc</h2>
+        <h2 style="text-align:center;">三十六小時天氣預報</h2>
+        <p style="text-align:center;">現在的時間是：<span id="current-time"></span></p>
+        <table style="text-align:center;margin:0 auto">
+            <tr>
+                <th>時間</th>
+                <th>溫度</th>
+                <th>降雨機率</th>
+                <th>天氣狀況</th>
+            </tr>
+            @for (var i = 0; i < ViewBag.WeatherDataList.Count; i++)
+            {
+                <tr>
+                    <td>@ViewBag.WeatherDataList[i].StartTime ~ @ViewBag.WeatherDataList[i].EndTime</td>
+                    <td>@ViewBag.WeatherDataListMinT[i].ParameterNameMinT @ViewBag.WeatherDataListMinT[i].ParameterUnitMinT -
+                        @ViewBag.WeatherDataListMaxT[i].ParameterNameMaxT @ViewBag.WeatherDataListMaxT[i].ParameterUnitMaxT</td>
+                    <td>@ViewBag.WeatherDataListPoP[i].ParameterNamePoP%</td>
+                    <td>@ViewBag.WeatherDataListCI[i].ParameterNameCI @ViewBag.WeatherDataList[i].ParameterName</td>
+                    <td></td>
+                </tr>
+            }
+        </table>
+    }
+}

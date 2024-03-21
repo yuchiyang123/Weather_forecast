@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Youtube API side project";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Handle","Youtube",FormMethod.Post))
+{
+    <select name="selectOptionValue">
+        <option value="Index">A</option>
+    </select>
+    <input type="submit" value="送出" />
+}
+<p>
+@using (Html.BeginForm("Youtube_api","Youtube",FormMethod.Post))
+{
+    <input type="text" name="keyword">
+    <input type="submit" name="submit_search" value="送出" />
+}
+
