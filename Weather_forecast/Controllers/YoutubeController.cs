@@ -27,10 +27,8 @@ namespace Weather_forecast.Controllers
             ViewBag.keyword = keyword;
             using (var client = new HttpClient())
             {
-                string api = "https://www.googleapis.com/youtube/v3/search?" +
-                    "q="+keyword +
-                    "&key=AIzaSyCt9ktHtjL8spHSy3Iob1LlvR1LR1p8xlI" +
-                    "&part=snippet&type=video";
+
+                string api = ""; //put your Youtube Data API
                 HttpResponseMessage response = await client.GetAsync(api);
                 if (response.IsSuccessStatusCode)
                 {
